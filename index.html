@@ -4,17 +4,25 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Bible Verses</title>
   </head>
   <body>
-
-   
+    <div class="search-container">
+      <form id="searchForm">
+        <select id="bookSelect" required>
+          <option value="">Selecciona un libro</option>
+          <option value="john">Juan</option>
+          <option value="matthew">Mateo</option>
+          <option value="mark">Marcos</option>
+          <option value="luke">Lucas</option>
+        </select>
+        <input type="number" id="chapterNumber" placeholder="Número de capítulo" min="1" required>
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+    <div id="verses-container"></div>
     <div id="versiculoX">hola</div>
     <div id="versiculoY">hola</div>
-
     <script type="module" src="/src/main.js"></script>
-
-
-
   </body>
 </html>
