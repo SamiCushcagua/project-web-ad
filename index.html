@@ -7,7 +7,9 @@
     <title>Bible Verses</title>
   </head>
   <body>
-    <div class="search-container">
+
+
+    <nav class="main-nav">
       <form id="searchForm">
         <select id="bookSelect" required>
           <option value="">Selecciona un libro</option>
@@ -18,13 +20,30 @@
         </select>
         <input type="number" id="chapterNumber" placeholder="Número de capítulo" min="1" required>
         <button type="submit">Buscar</button>
+
+        
+
+
       </form>
+      <div class="text-search-container">
+        <input type="text" id="textSearch" placeholder="Buscar palabra en los versículos...">
+        <button id="searchButton">Buscar texto</button>
+      </div>
+      <div id="verses-container"></div>
+      
+  
+    </nav>
+
+<br>
+<br>
+    <!-- Nuevo contenedor para favoritos -->
+    <div class="favorites-container">
+      <h2>Mis Versículos Favoritos</h2>
+      <div id="favorites-list"></div>
     </div>
-    <div class="text-search-container">
-      <input type="text" id="textSearch" placeholder="Buscar palabra en los versículos...">
-      <button id="searchButton">Buscar texto</button>
-    </div>
-    <div id="verses-container"></div>
+
+<br>
+<br>
 
     <script type="module" src="/src/main.js"></script>
   </body>

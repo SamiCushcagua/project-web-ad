@@ -24,6 +24,91 @@ async function getBookInfo(book) {
     }
 }
 
+// Función para guardar un versículo en favoritos
+function guardarFavorito(versiculo) {
+    try {
+        // Obtener favoritos actuales
+        let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+        
+        // Verificar si el versículo ya está en favoritos
+        const yaExiste = favoritos.some(fav => 
+            fav.book === versiculo.book_name && 
+            fav.chapter === versiculo.chapter && 
+            fav.verse === versiculo.verse
+        );
+
+        if (!yaExiste) {
+            // Agregar nuevo favorito
+            favoritos.push({
+                book: versiculo.book_name,
+                chapter: versiculo.chapter,
+                verse: versiculo.verse,
+                text: versiculo.text
+            });
+            
+            // Guardar en localStorage
+            localStorage.setItem('favoritos', JSON.stringify(favoritos));
+            
+            // Actualizar lista de favoritos
+            mostrarFavoritos();
+            
+            // Mostrar mensaje de éxito
+            alert('Versículo guardado en favoritos');
+        } else {
+            alert('Este versículo ya está en favoritos');
+        }
+    } catch (error) {
+        console.error('Error al guardar favorito:', error);
+        alert('Error al guardar el versículo');
+    }
+}
+
+// Función para mostrar favoritos
+function mostrarFavoritos() {
+    const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    const favoritesList = document.getElementById('favorites-list');
+    
+    if (favoritos.length === 0) {
+        favoritesList.innerHTML = '<p>No hay versículos favoritos guardados</p>';
+        return;
+    }
+    
+    let html = '<ul>';
+    favoritos.forEach(fav => {
+        html += `
+            <li>
+                ${fav.book} ${fav.chapter}:${fav.verse} - ${fav.text}
+                <button class="delete-btn" data-book="${fav.book}" data-chapter="${fav.chapter}" data-verse="${fav.verse}">Eliminar</button>
+            </li>
+        `;
+    });
+    html += '</ul>';
+    
+    favoritesList.innerHTML = html;
+
+    // Agregar event listeners a los botones de eliminar
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const book = this.dataset.book;
+            const chapter = parseInt(this.dataset.chapter);
+            const verse = parseInt(this.dataset.verse);
+            eliminarFavorito(book, chapter, verse);
+        });
+    });
+}
+
+// Función para eliminar un favorito
+function eliminarFavorito(book, chapter, verse) {
+    let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    
+    favoritos = favoritos.filter(fav => 
+        !(fav.book === book && fav.chapter === chapter && fav.verse === verse)
+    );
+    
+    localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    mostrarFavoritos();
+}
+
 // Función para buscar texto en los versículos
 function searchText(searchTerm) {
     if (!currentData1 || !currentData2) return;
@@ -47,6 +132,7 @@ function searchText(searchTerm) {
                     <th>Capítulo</th>
                     <th>Versículo</th>
                     <th>Texto</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,6 +147,9 @@ function searchText(searchTerm) {
                 <td>${verse.chapter}</td>
                 <td>${verse.verse}</td>
                 <td>${highlightedText}</td>
+                <td>
+                    <button class="favorite-btn" data-verse='${JSON.stringify(verse)}'>Guardar</button>
+                </td>
             </tr>
         `;
     });
@@ -77,6 +166,7 @@ function searchText(searchTerm) {
                     <th>Capítulo</th>
                     <th>Versículo</th>
                     <th>Texto</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -91,6 +181,9 @@ function searchText(searchTerm) {
                 <td>${verse.chapter}</td>
                 <td>${verse.verse}</td>
                 <td>${highlightedText}</td>
+                <td>
+                    <button class="favorite-btn" data-verse='${JSON.stringify(verse)}'>Guardar</button>
+                </td>
             </tr>
         `;
     });
@@ -102,6 +195,14 @@ function searchText(searchTerm) {
 
     // Mostrar las tablas en el contenedor
     document.getElementById('verses-container').innerHTML = html;
+
+    // Agregar event listeners a los botones de guardar
+    document.querySelectorAll('.favorite-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const verse = JSON.parse(this.dataset.verse);
+            guardarFavorito(verse);
+        });
+    });
 }
 
 // Función para obtener dos capítulos consecutivos
@@ -155,5 +256,8 @@ document.getElementById('textSearch').addEventListener('keypress', function(e) {
         searchText(searchTerm);
     }
 });
+
+// Cargar favoritos al iniciar
+mostrarFavoritos();
 
 setupCounter(document.querySelector('#counter'))
