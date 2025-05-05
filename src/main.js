@@ -1,9 +1,6 @@
 import './style.css'
 import javascriptLogo from './javascript.svg'
 import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
-
-
 
 const versiculoDivX = document.getElementById('versiculoX');
 const versiculoDivY = document.getElementById('versiculoY');
@@ -118,24 +115,28 @@ function searchText(searchTerm) {
     
     // Función para resaltar el texto encontrado
     function highlightText(text) {
-        const regex = new RegExp(`(${searchTerm})`, 'gi');
-        return text.replace(regex, '<mark>$1</mark>');
+        if (!searchTerm) return text;
+        const regex = new RegExp(searchTerm, 'gi');
+        return text.replace(regex, match => `<mark style="background-color: yellow; color: black;">${match}</mark>`);
     }
 
     // Crear las tablas HTML con el texto resaltado
     let html = `
-        <h2>${currentData1.reference} (${currentData1.verses.length} versículos)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Libro</th>
-                    <th>Capítulo</th>
-                    <th>Versículo</th>
-                    <th>Texto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="chapters-container">
+            <div class="chapter-box">
+                <h2>${currentData1.reference} (${currentData1.verses.length} versículos)</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Libro</th>
+                                <th>Capítulo</th>
+                                <th>Versículo</th>
+                                <th>Texto</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
     `;
 
     // Agregar versículos del primer capítulo con texto resaltado
@@ -155,21 +156,25 @@ function searchText(searchTerm) {
     });
 
     html += `
-            </tbody>
-        </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-        <h2>${currentData2.reference} (${currentData2.verses.length} versículos)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Libro</th>
-                    <th>Capítulo</th>
-                    <th>Versículo</th>
-                    <th>Texto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
+            <div class="chapter-box">
+                <h2>${currentData2.reference} (${currentData2.verses.length} versículos)</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Libro</th>
+                                <th>Capítulo</th>
+                                <th>Versículo</th>
+                                <th>Texto</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
     `;
 
     // Agregar versículos del segundo capítulo con texto resaltado
@@ -189,8 +194,11 @@ function searchText(searchTerm) {
     });
 
     html += `
-            </tbody>
-        </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     `;
 
     // Mostrar las tablas en el contenedor
@@ -245,19 +253,21 @@ document.getElementById('searchForm').addEventListener('submit', async function(
 
 // Manejar la búsqueda de texto
 document.getElementById('searchButton').addEventListener('click', function() {
+    console.log('Botón de búsqueda clickeado');
     const searchTerm = document.getElementById('textSearch').value;
+    console.log('Término de búsqueda:', searchTerm);
     searchText(searchTerm);
 });
 
 // También buscar al presionar Enter en el campo de búsqueda
 document.getElementById('textSearch').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
+        console.log('Enter presionado en el campo de búsqueda');
         const searchTerm = this.value;
+        console.log('Término de búsqueda:', searchTerm);
         searchText(searchTerm);
     }
 });
 
 // Cargar favoritos al iniciar
 mostrarFavoritos();
-
-setupCounter(document.querySelector('#counter'))
