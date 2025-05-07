@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to the Bible World</title>
+    <link rel="stylesheet" href="/src/style.css">
+  </head>
+  <body>
+    <div class="home-container">
+      <h1>Welcome to the Bible World</h1>
+      <a href="index.html" class="welcome-btn">Get in and discover The LIGHT</a>
+      
+      <div class="favorites-container">
+        <h2>Selecciona un libro</h2>
+        <select id="bookFilter" class="filter-select">
+          <option value="all">Todos los libros</option>
+          <option value="John">Johannes</option>
+          <option value="Matthew">Matteüs</option>
+          <option value="Mark">Marcus</option>
+          <option value="Luke">Lucas</option>
+        </select>
+        <div id="favorites-list"></div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/home.js"></script>
+  </body>
+</html> 

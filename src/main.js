@@ -5,11 +5,11 @@ import viteLogo from '/vite.svg'
 const versiculoDivX = document.getElementById('versiculoX');
 const versiculoDivY = document.getElementById('versiculoY');
 
-// Variables globales para almacenar los datos de los capítulos
+// Globale variabelen voor het opslaan van hoofdstukgegevens
 let currentData1 = null;
 let currentData2 = null;
 
-// Función para obtener el número total de capítulos de un libro
+// Functie om het totale aantal hoofdstukken van een boek te krijgen
 async function getBookInfo(book) {
     try {
         const response = await fetch(`https://bible-api.com/${book}+1`);
@@ -21,13 +21,13 @@ async function getBookInfo(book) {
     }
 }
 
-// Función para guardar un versículo en favoritos
+// Functie om een vers op te slaan in favorieten
 function guardarFavorito(versiculo) {
     try {
-        // Obtener favoritos actuales
+        // Huidige favorieten ophalen
         let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
         
-        // Verificar si el versículo ya está en favoritos
+        // Controleren of het vers al in favorieten staat
         const yaExiste = favoritos.some(fav => 
             fav.book === versiculo.book_name && 
             fav.chapter === versiculo.chapter && 
@@ -35,7 +35,7 @@ function guardarFavorito(versiculo) {
         );
 
         if (!yaExiste) {
-            // Agregar nuevo favorito
+            // Nieuwe favoriet toevoegen
             favoritos.push({
                 book: versiculo.book_name,
                 chapter: versiculo.chapter,
@@ -43,13 +43,13 @@ function guardarFavorito(versiculo) {
                 text: versiculo.text
             });
             
-            // Guardar en localStorage
+            // Opslaan in localStorage
             localStorage.setItem('favoritos', JSON.stringify(favoritos));
             
-            // Actualizar lista de favoritos
+            // Favorietenlijst bijwerken
             mostrarFavoritos();
             
-            // Mostrar mensaje de éxito
+            // Succesbericht tonen
             alert('Versículo guardado en favoritos');
         } else {
             alert('Este versículo ya está en favoritos');
@@ -60,7 +60,7 @@ function guardarFavorito(versiculo) {
     }
 }
 
-// Función para mostrar favoritos
+// Functie om favorieten weer te geven
 function mostrarFavoritos() {
     const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
     const favoritesList = document.getElementById('favorites-list');
@@ -70,8 +70,23 @@ function mostrarFavoritos() {
         return;
     }
     
+    // Krijg de geselecteerde filterwaarde
+    const libroSeleccionado = document.getElementById('bookFilter').value;
+    
+    // Filter de favorieten
+    let favoritosFiltrados = [];
+    if (libroSeleccionado === 'all') {
+        favoritosFiltrados = favoritos;
+    } else {
+        for (let favorito of favoritos) {
+            if (favorito.book === libroSeleccionado) {
+                favoritosFiltrados.push(favorito);
+            }
+        }
+    }
+    
     let html = '<ul>';
-    favoritos.forEach(fav => {
+    favoritosFiltrados.forEach(fav => {
         html += `
             <li>
                 ${fav.book} ${fav.chapter}:${fav.verse} - ${fav.text}
@@ -83,7 +98,7 @@ function mostrarFavoritos() {
     
     favoritesList.innerHTML = html;
 
-    // Agregar event listeners a los botones de eliminar
+    // Event listeners toevoegen aan verwijderknoppen
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', function() {
             const book = this.dataset.book;
@@ -94,7 +109,7 @@ function mostrarFavoritos() {
     });
 }
 
-// Función para eliminar un favorito
+// Functie om een favoriet te verwijderen
 function eliminarFavorito(book, chapter, verse) {
     let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
     
@@ -106,21 +121,21 @@ function eliminarFavorito(book, chapter, verse) {
     mostrarFavoritos();
 }
 
-// Función para buscar texto en los versículos
+// Functie om tekst in verzen te zoeken
 function searchText(searchTerm) {
     if (!currentData1 || !currentData2) return;
     
-    // Convertir el término de búsqueda a minúsculas para búsqueda sin distinción de mayúsculas
+    // Zoekterm naar kleine letters converteren voor hoofdletterongevoelige zoekopdracht
     searchTerm = searchTerm.toLowerCase();
     
-    // Función para resaltar el texto encontrado
+    // Functie om gevonden tekst te markeren
     function highlightText(text) {
         if (!searchTerm) return text;
         const regex = new RegExp(searchTerm, 'gi');
         return text.replace(regex, match => `<mark style="background-color: yellow; color: black;">${match}</mark>`);
     }
 
-    // Crear las tablas HTML con el texto resaltado
+    // HTML-tabellen maken met gemarkeerde tekst
     let html = `
         <div class="chapters-container">
             <div class="chapter-box">
@@ -139,7 +154,7 @@ function searchText(searchTerm) {
                         <tbody>
     `;
 
-    // Agregar versículos del primer capítulo con texto resaltado
+    // Verzen van het eerste hoofdstuk toevoegen met gemarkeerde tekst
     currentData1.verses.forEach(verse => {
         const highlightedText = highlightText(verse.text);
         html += `
@@ -177,7 +192,7 @@ function searchText(searchTerm) {
                         <tbody>
     `;
 
-    // Agregar versículos del segundo capítulo con texto resaltado
+    // Verzen van het tweede hoofdstuk toevoegen met gemarkeerde tekst
     currentData2.verses.forEach(verse => {
         const highlightedText = highlightText(verse.text);
         html += `
@@ -201,10 +216,10 @@ function searchText(searchTerm) {
         </div>
     `;
 
-    // Mostrar las tablas en el contenedor
+    // Tabellen in de container weergeven
     document.getElementById('verses-container').innerHTML = html;
 
-    // Agregar event listeners a los botones de guardar
+    // Event listeners toevoegen aan opslaanknoppen
     document.querySelectorAll('.favorite-btn').forEach(button => {
         button.addEventListener('click', function() {
             const verse = JSON.parse(this.dataset.verse);
@@ -213,18 +228,18 @@ function searchText(searchTerm) {
     });
 }
 
-// Función para obtener dos capítulos consecutivos
+// Functie om twee opeenvolgende hoofdstukken te krijgen
 async function getTwoChapters(book, firstChapter) {
     try {
-        // Obtener el primer capítulo
+        // Eerste hoofdstuk ophalen
         const response1 = await fetch(`https://bible-api.com/${book}+${firstChapter}`);
         currentData1 = await response1.json();
 
-        // Obtener el siguiente capítulo
+        // Volgende hoofdstuk ophalen
         const response2 = await fetch(`https://bible-api.com/${book}+${Number(firstChapter) + 1}`);
         currentData2 = await response2.json();
 
-        // Mostrar los capítulos sin resaltar
+        // Hoofdstukken weergeven zonder markering
         searchText('');
 
     } catch (error) {
@@ -233,16 +248,16 @@ async function getTwoChapters(book, firstChapter) {
     }
 }
 
-// Manejar el envío del formulario
+// Formulierverzending afhandelen
 document.getElementById('searchForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const book = document.getElementById('bookSelect').value;
     const chapter = document.getElementById('chapterNumber').value;
     
-    // Obtener información del libro
+    // Boekinformatie ophalen
     const bookInfo = await getBookInfo(book);
     
-    // Validar el número de capítulo
+    // Hoofdstuknummer valideren
     if (bookInfo && chapter > bookInfo.verses.length) {
         alert(`Este libro solo tiene ${bookInfo.verses.length} capítulos`);
         return;
@@ -251,7 +266,7 @@ document.getElementById('searchForm').addEventListener('submit', async function(
     getTwoChapters(book, chapter);
 });
 
-// Manejar la búsqueda de texto
+// Tekstzoekopdracht afhandelen
 document.getElementById('searchButton').addEventListener('click', function() {
     console.log('Botón de búsqueda clickeado');
     const searchTerm = document.getElementById('textSearch').value;
@@ -259,7 +274,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
     searchText(searchTerm);
 });
 
-// También buscar al presionar Enter en el campo de búsqueda
+// Ook zoeken bij Enter in het zoekveld
 document.getElementById('textSearch').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         console.log('Enter presionado en el campo de búsqueda');
@@ -269,5 +284,8 @@ document.getElementById('textSearch').addEventListener('keypress', function(e) {
     }
 });
 
-// Cargar favoritos al iniciar
+// Event listener toevoegen voor de filter
+document.getElementById('bookFilter').addEventListener('change', mostrarFavoritos);
+
+// Favorieten laden bij het opstarten
 mostrarFavoritos();

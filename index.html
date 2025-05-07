@@ -10,6 +10,7 @@
 
 
     <nav class="main-nav">
+      <a href="home.html" class="nav-btn">Ir a Favoritos</a>
       <form id="searchForm">
         <select id="bookSelect" required>
           <option value="">Selecciona un libro</option>
@@ -41,6 +42,13 @@
     <!-- Nuevo contenedor para favoritos -->
     <div class="favorites-container">
       <h2>Mis Versículos Favoritos</h2>
+      <select id="bookFilter" class="filter-select">
+        <option value="all">Todos los libros</option>
+        <option value="John">Juan</option>
+        <option value="Matthew">Mateo</option>
+        <option value="Mark">Marcos</option>
+        <option value="Luke">Lucas</option>
+      </select>
       <div id="favorites-list"></div>
     </div>
 
