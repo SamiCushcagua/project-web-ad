@@ -1,14 +1,91 @@
+# Bijbel Vers Verkenner
+
+Een interactieve webapplicatie voor het verkennen en beheren van bijbelverzen. Hiermee kunt u verzen zoeken, favorieten opslaan en filteren op boeken.
+
+## Kenmerken
+
+-  Zoeken naar verzen op boek en hoofdstuk
+-  Favoriete verzen opslaan
+-  Filteren van favorieten op boek
+-  Responsief ontwerp
+-  Standaard donkere modus
+
+## Vereisten
+
+- Node.js (versie 14 of hoger)
+- npm (inbegrepen bij Node.js)
+
+## Installatie
+
+1. Kloon de repository:
+```bash
+
+```
+
+2. Installeer de dependencies:
+```bash
+npm install
+```
+
+3. Start de ontwikkelserver:
+```bash
+npm run dev
+```
+
+4. Open uw browser en ga naar:
+```
+http://localhost:5173
+```
+
+## Gebruik
+
+### Verzen Zoeken
+1. Selecteer een bijbelboek
+2. Voer het hoofdstuknummer in
+3. Klik op "Zoeken" om de verzen te bekijken
+
+### Favorieten Beheren
+- Om een vers op te slaan: Klik op de "Opslaan" knop naast het vers
+- Om uw favorieten te bekijken: Klik op "Ga naar Favorieten" in de navigatie
+- Om een favoriet te verwijderen: Klik op de "Verwijderen" knop naast het vers
+
+### Favorieten Filteren
+- Gebruik op de favorietenpagina de selector om te filteren op specifiek boek
+
+## Gebruikte Technologieën
+
+- Vite
+- JavaScript
+- HTML5
+- CSS3
+- Bible API (bible-api.com)
+
+## Projectstructuur
+
+```
+bible-verse-explorer/
+├── src/
+│   ├── main.js          # Hoofdlogica
+│   ├── home.js          # Favorietenpagina logica
+│   ├── style.css        # Stijlen
+│   └── index.html       # Hoofdpagina
+├── public/              # Statische bestanden
+└── package.json         # Dependencies en scripts
+```
+
+
+
 # Bible Verse Explorer
 
 Una aplicación web interactiva para explorar y gestionar versículos bíblicos. Permite buscar versículos, guardar favoritos y filtrar por libros.
 
 ## Características
 
-- 🔍 Búsqueda de versículos por libro y capítulo
-- ⭐ Guardar versículos favoritos
-- 📚 Filtrado de favoritos por libro
-- 📱 Diseño responsive
-- 🌙 Modo oscuro por defecto
+-  Búsqueda de versículos por libro y capítulo
+-  Guardar versículos favoritos
+- Filtrado de favoritos por libro
+-  Diseño responsive
+- Modo oscuro por defecto
 
 ## Requisitos Previos
 
@@ -19,8 +96,7 @@ Una aplicación web interactiva para explorar y gestionar versículos bíblicos.
 
 1. Clona el repositorio:
 ```bash
-git clone https://github.com/tu-usuario/bible-verse-explorer.git
-cd bible-verse-explorer
+
 ```
 
 2. Instala las dependencias:
@@ -74,26 +150,3 @@ bible-verse-explorer/
 └── package.json         # Dependencias y scripts
 ```
 
-## Scripts Disponibles
-
-- `npm run dev` - Inicia el servidor de desarrollo
-- `npm run build` - Construye la aplicación para producción
-- `npm run preview` - Vista previa de la versión de producción
-
-## Contribuir
-
-1. Haz un Fork del proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
-
-## Contacto
-
-Tu Nombre - [@tutwitter](https://twitter.com/tutwitter)
-
-Link del Proyecto: [https://github.com/tu-usuario/bible-verse-explorer](https://github.com/tu-usuario/bible-verse-explorer) 
